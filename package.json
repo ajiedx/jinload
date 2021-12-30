@@ -1,0 +1,36 @@
+{
+  "name": "jinload",
+  "version": "1.0.0",
+  "description": "NjNest loader, reload CSS and JavaScript",
+  "main": "jinload.js",
+  "build": "jinload.js.build",
+  "scripts": {
+    "preinstall": "node build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajiedx/jinload.git"
+  },
+  "keywords": [
+    "Load",
+    "Reload",
+    "CSS",
+    "JS",
+    "Web",
+    "Browser",
+    "Web",
+    "Api",
+    "x1"
+  ],
+  "author": "ajiedx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajiedx/jinload/issues"
+  },
+  "homepage": "https://github.com/ajiedx/jinload#readme",
+  "dependencies": {
+    "njsuper": "^1.0.5",
+    "njx1": "^1.0.0"
+  }
+}
