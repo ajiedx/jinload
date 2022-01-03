@@ -28,7 +28,7 @@ class NJinLoads extends NjSuper {
         super(dt, objx)
         if (this.construct) {
             for (const i in this.loads) {
-                this[i] = new JinLoad(i, {load: this.loads[i]})
+                this[i] = new NJinLoad(i, {load: this.loads[i]})
             }
 
             delete this.loads

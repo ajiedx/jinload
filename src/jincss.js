@@ -8,7 +8,7 @@ class JinCss extends NjSuper {
     json(css, state) {
         this.response = 'JinCss: '+state+'\r\n\r\n { '
         let line = ''
-        console.log(css)
+
         for (const l in css) {
             let li = css[l].length - 1
             for (const i in css[l]) {
@@ -43,18 +43,23 @@ class JinCss extends NjSuper {
             else {
                 let li = 0
                 if (this.il[this.li][2] - this.il[this.li][0] + 1 > index) {
-                    for (let nd = index; nd < 6; nd++) {
+                    let nd = index
+                    for (let i = 0; i < 6; i++) {
                         if (this.incss[this.li][nd]) {
+                            console.log(this.incss[this.li][nd])
                             if (this.incss[this.li][nd][0] !== dbl) li = li + 1
                             else {
-                                f = true; this.exists = true; break;
+                                f = true; this.exists = true;  break; 
                             }
+                            nd = nd + 1
                         }
 
                     }
+                    
                 }
 
                 if (f) {
+                    // console.log(index)
                     for (let de = 0; de < li; de++) {
                         this.incss[this.li][index][2] = Number('-'+this.incss[this.li][index][1])
                         if (!this.innew[this.li]) this.innew[this.li] = []
@@ -62,27 +67,17 @@ class JinCss extends NjSuper {
                         this.innew[this.li][iw] = this.incss[this.li][index]
                         index = index + 1, iw = iw + 1
                     }
+                    this.il[this.li][1] = this.il[this.li][1] + li;
                     this.index = index
                     // this.load[this.li][index] = []
                     // this.load[this.li][index][1] =
 
                 } else {
-                    // let th = true
-                    console.log(this.li, dbl)
                     this.li = this.li + 1
-                    console.log('hello', dbl)
-                    // for (let i = 0; i < this.il.length; i++) {
-                    //     if (this.incss[i]) {
-                    //         for (const l in this.incss[i]) {
-                    //             if (this.incss[i][l][1] == index) {index= index + 1;this.li = this.li +th = true; break;}
-                    //         }
-                    //         this.li = this.li + 1
-                    //     }
-                    // }
                     if (this.incss[this.li]) {
                         let sm = false
                         if (!this.il[this.li]) this.il[this.li] = [], this.il[this.li][0] = this.il[this.li - 1][2], this.il[this.li][1] = this.il[this.li - 1][2]
-                        console.log( this.il[this.li][1],  this.il[this.li][2], this.il[this.li][1] < this.il[this.li][2], this.li)
+                        // console.log( this.il[this.li][1],  this.il[this.li][2], this.il[this.li][1] < this.il[this.li][2], this.li)
                         if (this.il[this.li + 1]) {
                             if (this.il[this.li][1] == this.il[this.li][2]) {
                                 if (this.incss[this.li + 1][this.il[this.li + 1][2] - this.il[this.li + 1][1]]) {
@@ -95,7 +90,6 @@ class JinCss extends NjSuper {
                             }
                         }
                         if (sm) {
-                            console.log(dbl, this.li)
                             flow(dbl, this.index)
                             sm = false
                         }
@@ -130,7 +124,6 @@ class JinCss extends NjSuper {
                     }
 
                 }
-                // console.log(this.li, index, this.il[this.li][1] - this.il[this.li][0])
             }
 
         }
@@ -205,19 +198,18 @@ class JinCss extends NjSuper {
             }  else if(!file[i].match(/[\n\r\t]/)) {
                 double = double + file[i]
             }
-
         }
         if (this.il) {
-            for (const i in this.il) {
-                // this.lindex = this.il[i][2]
-                if (this.il[i][2] > this.il[i][1]) {
-                    let fi = this.il[i][2] - this.il[i][0]
-                    this.incss[i][this.il[i][2] - this.il[i][0]] = ['']
-                    flow('', this.il[i][1])
+            // for (const i in this.il) {
+            //     // this.lindex = this.il[i][2]
+            //     if (this.il[i][2] > this.il[i][1]) {
+            //         let fi = this.il[i][2] - this.il[i][0]
+            //         this.incss[i][this.il[i][2] - this.il[i][0]] = ['']
+            //         flow('', this.il[i][1])
 
-                    delete this.incss[i][this.il[i][2] - this.il[i][0]]
-                }
-            }
+            //         delete this.incss[i][this.il[i][2] - this.il[i][0]]
+            //     }
+            // }
 
             for (let i = 0; i < this.il.length; i++) {
                 this.il[i][2] = this.il[i][1]
@@ -230,8 +222,11 @@ class JinCss extends NjSuper {
             if (brackets != 0) this.json(this.load, 'First Load'), this.incss = this.load, this.il[0][1] = this.i, this.il[0][0] = 0, this.il[0][2] = this.i
             else this.response = 'JinCss: No Brackets\r\n\r\n', console.log('Close The Brackets')
         } else if (this.innew) {
-            console.log(this.incss)
-            if (brackets != 0) this.json(this.innew, 'Load')
+            // console.log(this.incss)
+            // this.output(this.innew)
+            
+            if (!this.innew[0]) this.response = 'JinCss: No Changes\r\n\r\n'
+            if (brackets != 0 && this.innew[0]) this.json(this.innew, 'Load')
             else this.response = 'JinCss: No Brackets\r\n\r\n', console.log('Close The Brackets')
         }
     }

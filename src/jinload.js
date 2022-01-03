@@ -143,7 +143,7 @@ class JinLoad extends JinCache {
             if (this.isIntro('load', jinload)) {
                 let name = jinload.split('.')[1]
                 console.log(jinload)
-                this.views(name, 'load', {'JinLoad': jinload})
+                this.views(name, 'load', {'JinLoadName': name, 'JinLoad': jinload})
             }
             console.log(jinload)
         }
@@ -166,15 +166,15 @@ class JinLoad extends JinCache {
     views(name, state, header, history) {
         let path = location.pathname; let perspective
         if (state === 'click') if (history.parent !== 'no-parent') path = path.split('/').filter(path => history.parent !== path).join('/')
-        const resolveView = (text) => { if (state) this.webView(text) }
+        const resolveView = (text) => { if (state) this.webView(text, name) }
 
         if (state === 'click') perspective = 'GET'
         else if (state === 'load') perspective = 'PUT'
 
         const headers = {
             'Content-Type': '*/*',
-            'Event': state,
-            'JinLoadName': name
+            'Event': state
+
         }
 
         Object.assign(header, headers)
