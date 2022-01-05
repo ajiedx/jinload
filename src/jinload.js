@@ -130,6 +130,7 @@ class JinLoad extends JinCache {
     }
 
 
+
     htmlAttributes() {
         // const html = document.querySelector('html')
         // html.setAttribute('jinload', 'html')
@@ -140,10 +141,14 @@ class JinLoad extends JinCache {
 
         for (const j in jinloads) {
             let jinload = jinloads[j].getAttribute('jinload')
+            
             if (this.isIntro('load', jinload)) {
+                // let element = document.body.querySelector('[jinload='+jinload+']')
+                // console.log(element, 'kkkkkkkkkkkkkkk')
                 let name = jinload.split('.')[1]
-                console.log(jinload)
                 this.views(name, 'load', {'JinLoadName': name, 'JinLoad': jinload})
+                // jinload[j].parentNode(i, jinloads[j])
+                this.register(jinloads[j], name)
             }
             console.log(jinload)
         }
@@ -219,10 +224,10 @@ jinload = new JinLoad()
 function onJinLoad(state) {
     if (state === 'ready') {
         jinload.init()
-        // let comestas = document.querySelector('#comestas')
-        // let help = document.querySelector('.hello')
-        // comestas.click()
-        // help.click()
+        let comestas = document.querySelector('#comestas')
+        let help = document.querySelector('.hello')
+        comestas.click()
+        help.click()
         console.log('----------------------------------------')
     }
     if (state === 'jinReload') {
