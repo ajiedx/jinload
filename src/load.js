@@ -14,9 +14,8 @@ class NJinLoad extends NjSuper {
     }
 
     rsp(name) {
-        console.log(this, name)
         if (this[name]) {
-            return this[name]
+            return this.rn('NjLoad: '+name) + this[name]
         } else {
             return false
         }
@@ -33,6 +32,7 @@ class NJinLoads extends NjSuper {
 
             delete this.loads
         }
+        
     }
 
     css (file) {

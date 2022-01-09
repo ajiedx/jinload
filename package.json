@@ -1,6 +1,6 @@
 {
   "name": "jinload",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "NjNest loader, reload CSS and JavaScript",
   "main": "jinload.js",
   "build": "jinload.js.build",

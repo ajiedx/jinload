@@ -59,8 +59,8 @@ class JinLoad extends JinCache {
                 }
             }
 
-            if (evt.target.hasAttribute('jinload') && execute) {
-                const jinloadvalue = evt.target.getAttribute('jinload')
+            if (evt.target.hasAttribute('nj') && execute) {
+                const jinloadvalue = evt.target.getAttribute('nj')
                 const history = {href: href.split('/')[1], parent: parentUrl}
                 const header = {
                     'EventListener': 'body',
@@ -137,10 +137,10 @@ class JinLoad extends JinCache {
 
         // const body = document.querySelector('body')
         // body.setAttribute('jinload', 'body')
-        const jinloads = [...document.body.querySelectorAll('[jinload]')]
+        const jinloads = [...document.body.querySelectorAll('[nj]')]
 
         for (const j in jinloads) {
-            let jinload = jinloads[j].getAttribute('jinload')
+            let jinload = jinloads[j].getAttribute('nj')
             
             if (this.isIntro('load', jinload)) {
                 // let element = document.body.querySelector('[jinload='+jinload+']')
@@ -150,7 +150,6 @@ class JinLoad extends JinCache {
                 // jinload[j].parentNode(i, jinloads[j])
                 this.register(jinloads[j], name)
             }
-            console.log(jinload)
         }
 
     }
@@ -158,6 +157,7 @@ class JinLoad extends JinCache {
     rqs(name, path, func, headers, errsp, state) {
         fetch(path, headers).then(response => {
             response.text().then((text) => {
+                console.log(text, 'asdasdasdsad')
                 func(text)
                 if (state) onJinLoad(state), console.log(state)
             })
@@ -171,22 +171,32 @@ class JinLoad extends JinCache {
     views(name, state, header, history) {
         let path = location.pathname; let perspective
         if (state === 'click') if (history.parent !== 'no-parent') path = path.split('/').filter(path => history.parent !== path).join('/')
-        const resolveView = (text) => { if (state) this.webView(text, name) }
-
-        if (state === 'click') perspective = 'GET'
-        else if (state === 'load') perspective = 'PUT'
-
-        const headers = {
-            'Content-Type': '*/*',
-            'Event': state
-
+        const resolveView = (text) => {
+            if (state) {
+                this.webView(text, name)
+                console.log(text, 'views'+name+this.filterChars(path, '/')+state)
+                this.cache('views'+name+this.filterChars(path, '/')+state, text)
+            }
         }
 
-        Object.assign(header, headers)
-        this.rqs(name, path, resolveView, {
-            method: perspective,
-            headers: header,
-        }, 'views from event ' + state, state)
+        if (this.cacheHas('views'+name+this.filterChars(path, '/')+state)) {
+            this.webView('cached', name)
+        } else {
+            if (state === 'click') perspective = 'GET'
+            else if (state === 'load') perspective = 'PUT'
+    
+            let headers = {
+                'Content-Type': '*/*',
+                'Event': state
+            }
+
+            Object.assign(headers, header)
+    
+            this.rqs(name, path, resolveView, {
+                method: perspective,
+                headers,
+            }, 'views from event ' + state, state)
+        }
     }
 
     startReload() {

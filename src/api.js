@@ -13,8 +13,24 @@ class JinApi extends X1 {
     }
 
     x1viload(text, name) {
-        this.x1(text, name)
+        if (text === 'cached') {
+            if (this.cacheHas('x1__'+name)) {
+                this.createX1Elements(this.cache('x1__'+name), name)
+            } else {
+                this.x1(text, name)
+                // this.assign(this.x1s[name], {id: this.x1id})
+                this.cache('x1__'+name, this.x1s[name])
+            }
+            
+        } else {
+            this.x1(text, name)
+            // this.assign(this.x1s[name], {id: this.x1id})
+            this.cache('x1__'+name, this.x1s[name])
+        }
+        
         this.viloads[name] = {id: this.x1id}
+        console.log(this.viloads[name])
+        console.log(this.x1s[name])
         
         if (this.ids[this.x1id]) {
             for (let i = this.ids[this.x1id][0]; i < this.ids[this.x1id][1] + 1; i++) {
@@ -42,7 +58,7 @@ class JinApi extends X1 {
                                     this.vicount = this.vicount + 1
                                 }
                                 break
-                            case 'jinload':
+                            case 'nj':
                                 if (l[1] === 'views') {
                                     this.views(l[1], 'load', {'JinLoadName': l[1], 'JinLoad': l[1]})
                                     Object.assign(this.viloads[name], {name: name, view: l[1]})
@@ -74,13 +90,10 @@ class JinApi extends X1 {
                     for (const l in elements[i][1]) {
 
                         if(this.isIntro('=', elements[i][1][l])) {
-                            // console.log(elements[i][1][l - 1], this.filterChars(elements[i][1][l], '='), '---')
                             element.setAttribute(elements[i][1][l - 1], this.filterChars(elements[i][1][l], '='))
                         } else if(this.isIntro(':', elements[i][1][l])) {
-                            // console.log(this.filterChars(elements[i][1][l], ':'), '___')
                             element.innerText = this.filterChars(elements[i][1][l], ':')
                         }
-                        // console.log(element)
                     }
 
                     wrap.append(element)
@@ -111,6 +124,7 @@ class JinApi extends X1 {
     }
 
     loadNappend() {
+       
         for (const i in this.viloads) {
             if (this.viloads[i].name && !this.viloads[i].complete) {
                 if (this.viloads[i].after) {
@@ -142,8 +156,9 @@ class JinApi extends X1 {
     webView(text, name) {
         let syntax
         if (this.isIntro('<', text[0])) syntax = 'html'
-        else syntax = 'pjm'
-        if (syntax === 'pjm') {
+        else syntax = 'x1'
+        if (syntax === 'x1') {
+            console.log(text, 'asdasdasd', name)
             this.x1viload(text, name)
 
             if (this.vicount > 0) {
@@ -153,10 +168,7 @@ class JinApi extends X1 {
                     this.index = 0
                     this.loadNappend()           
                 }
-                
-         
             }
-            
         }
     }
 }
